@@ -1,6 +1,16 @@
 const express = require("express");
 const users = express.Router();
-const { getUser, createUser } = require("../queries/users.js");
+const { getAllUsers, getUser, createUser } = require("../queries/users.js");
+
+// Index
+users.get("/", async (req, res) => {
+  const allUsers = await getAllUsers();
+  if (allUsers.length) {
+    res.status(200).json(allUsers);
+  } else {
+    res.status(500).json({ error: "server error" });
+  }
+});
 
 // Show
 users.get("/:id", async (req, res) => {

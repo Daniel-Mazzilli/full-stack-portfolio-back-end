@@ -1,5 +1,14 @@
 const db = require("../db/dbConfig.js");
 
+const getAllUsers = async () => {
+  try {
+    const allUsers = await db.any("SELECT * FROM users");
+    return allUsers;
+  } catch (error) {
+    return error;
+  }
+};
+
 const getUser = async (idValue) => {
   try {
     const oneUser = await db.one("SELECT * FROM users WHERE id=$1", idValue);
@@ -28,6 +37,7 @@ const createUser = async (user) => {
 };
 
 module.exports = {
+  getAllUsers,
   getUser,
   createUser,
 };
