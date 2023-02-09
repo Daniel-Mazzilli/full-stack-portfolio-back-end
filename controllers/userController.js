@@ -2,10 +2,14 @@ const express = require("express");
 const users = express.Router();
 const {
   getAllUsers,
-  checkUsername,
   getUser,
   createUser,
 } = require("../queries/users.js");
+const usernameController = require("./usernameController.js");
+const emailController = require("./emailController.js");
+
+users.use("/usernames", usernameController);
+users.use("/emails", emailController);
 
 // Index
 users.get("/", async (req, res) => {
@@ -15,13 +19,6 @@ users.get("/", async (req, res) => {
   } else {
     res.status(500).json({ error: "server error" });
   }
-});
-
-// Check username
-users.get("/:username", async (req, res) => {
-  const { username } = req.params;
-  const isUnique = await checkUsername(username);
-  res.status(200).json({value: isUnique})
 });
 
 // Show
