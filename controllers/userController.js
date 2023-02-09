@@ -1,6 +1,11 @@
 const express = require("express");
 const users = express.Router();
-const { getAllUsers, getUser, createUser } = require("../queries/users.js");
+const {
+  getAllUsers,
+  checkUsername,
+  getUser,
+  createUser,
+} = require("../queries/users.js");
 
 // Index
 users.get("/", async (req, res) => {
@@ -10,6 +15,13 @@ users.get("/", async (req, res) => {
   } else {
     res.status(500).json({ error: "server error" });
   }
+});
+
+// Check username
+users.get("/:username", async (req, res) => {
+  const { username } = req.params;
+  const isUnique = await checkUsername(username);
+  res.status(200).json({value: isUnique})
 });
 
 // Show

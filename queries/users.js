@@ -9,6 +9,18 @@ const getAllUsers = async () => {
   }
 };
 
+const checkUsername = async (username) => {
+  try {
+    const isUnique = await db.one(
+      "SELECT username FROM users WHERE username=$1",
+      username
+    );
+    return false;
+  } catch (error) {
+    return true;
+  }
+};
+
 const getUser = async (idValue) => {
   try {
     const oneUser = await db.one("SELECT * FROM users WHERE id=$1", idValue);
@@ -38,6 +50,7 @@ const createUser = async (user) => {
 
 module.exports = {
   getAllUsers,
+  checkUsername,
   getUser,
   createUser,
 };
