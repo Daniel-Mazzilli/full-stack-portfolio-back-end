@@ -1,10 +1,7 @@
 const express = require("express");
 const users = express.Router();
-const {
-  getAllUsers,
-  getUser,
-  createUser,
-} = require("../queries/users.js");
+const { getAllUsers, getUser, createUser } = require("../queries/users.js");
+const { hashPass } = require("../validations.js")
 const usernameController = require("./usernameController.js");
 const emailController = require("./emailController.js");
 
@@ -33,7 +30,7 @@ users.get("/:id", async (req, res) => {
 });
 
 // Create
-users.post("/", async (req, res) => {
+users.post("/", hashPass, async (req, res) => {
   const newUser = await createUser(req.body);
   if (!newUser.message) {
     res.status(200).json(newUser);
