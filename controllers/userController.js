@@ -1,12 +1,14 @@
 const express = require("express");
 const users = express.Router();
 const { getAllUsers, getUser, createUser } = require("../queries/users.js");
-const { hashPass } = require("../validations.js")
+const { hashPass } = require("../middleware/validatePass.js");
 const usernameController = require("./usernameController.js");
 const emailController = require("./emailController.js");
+const authController = require("./authController.js");
 
 users.use("/usernames", usernameController);
 users.use("/emails", emailController);
+users.use("/auth", authController);
 
 // Index
 users.get("/", async (req, res) => {
