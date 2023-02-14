@@ -3,7 +3,7 @@ const db = require("../db/dbConfig");
 const getAllTrips = async (userID) => {
   try {
     const allTrips = await db.any(
-      "SELECT * FROM songs WHERE user_id=$1",
+      "SELECT * FROM trips WHERE user_id=$1",
       userID
     );
     return allTrips;
