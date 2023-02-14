@@ -9,10 +9,25 @@ const getAllUsers = async () => {
   }
 };
 
-const getUser = async (idValue) => {
+const getUser = async (username) => {
   try {
-    const oneUser = await db.one("SELECT * FROM users WHERE id=$1", idValue);
+    const oneUser = await db.one(
+      "SELECT * FROM users WHERE username=$1",
+      username
+    );
     return oneUser;
+  } catch (error) {
+    return error;
+  }
+};
+
+const getIdByUsername = async (username) => {
+  try {
+    const userId = await db.one(
+      "SELECT id FROM users WHERE username=$1",
+      username
+    );
+    return userId;
   } catch (error) {
     return error;
   }
@@ -20,7 +35,10 @@ const getUser = async (idValue) => {
 
 const getUserByUsername = async (username) => {
   try {
-    const oneUser = await db.one("SELECT * FROM users WHERE username=$1", username);
+    const oneUser = await db.one(
+      "SELECT * FROM users WHERE username=$1",
+      username
+    );
     return oneUser;
   } catch (error) {
     return error;
@@ -48,6 +66,7 @@ const createUser = async (user) => {
 module.exports = {
   getAllUsers,
   getUser,
+  getIdByUsername,
   getUserByUsername,
   createUser,
 };

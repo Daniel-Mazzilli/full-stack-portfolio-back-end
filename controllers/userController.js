@@ -5,10 +5,12 @@ const { hashPass } = require("../middleware/validatePass.js");
 const usernameController = require("./usernameController.js");
 const emailController = require("./emailController.js");
 const authController = require("./authController.js");
+const tripController = require("./tripController.js");
 
 users.use("/usernames", usernameController);
 users.use("/emails", emailController);
 users.use("/auth", authController);
+users.use("/:username/trips", tripController);
 
 // Index
 users.get("/", async (req, res) => {
@@ -21,9 +23,9 @@ users.get("/", async (req, res) => {
 });
 
 // Show
-users.get("/:id", async (req, res) => {
-  const { id } = req.params;
-  const user = await getUser(id);
+users.get("/:username", async (req, res) => {
+  const { username } = req.params;
+  const user = await getUser(username);
   if (!user.message) {
     res.status(200).json(user);
   } else {
