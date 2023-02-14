@@ -6,6 +6,20 @@ const { getUserByUsername } = require("../queries/users.js");
 dotenv.config();
 const refreshList = {};
 
+const verifyToken = (req, res, next) => {
+  const authHeader = req.headers["authorization"];
+  const token = authHeader && authHeader.split(" ")[1];
+  if (!token) {
+    return res.status(403).send("A token is required for authentication");
+  }
+  try {
+    req.decoded = jwt.verify(token, process.env.SECRET_TOKEN);
+  } catch (error) {
+    return res.status(401).send("Invalid Token");
+  }
+  return next();
+};
+
 const userLogin = async (req, res, next) => {
   const { username } = req.body;
   const user = await getUserByUsername(username);
@@ -47,4 +61,4 @@ const userLogin = async (req, res, next) => {
   }
 };
 
-module.exports = { userLogin };
+module.exports = { verifyToken, userLogin };

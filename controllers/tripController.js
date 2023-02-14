@@ -8,9 +8,10 @@ const {
   updateTrip,
 } = require("../queries/trips.js");
 const { getIdByUsername } = require("../queries/users.js");
+const { verifyToken } = require("../middleware/auth.js");
 
 // Index
-trips.get("/", async (req, res) => {
+trips.get("/", verifyToken, async (req, res) => {
   const { username } = req.params;
   const userId = await getIdByUsername(username);
   try {
