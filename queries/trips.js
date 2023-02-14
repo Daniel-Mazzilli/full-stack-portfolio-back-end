@@ -58,7 +58,7 @@ const deleteTrip = async (id, userID) => {
 const updateTrip = async (id, userID, trip) => {
   try {
     const updatedTrip = await db.one(
-      "UPDATE trips SET name=$1, country=$2, future_trip=$3, image=$4, description=$5, WHERE id=$6 AND user_id=$7 RETURNING *",
+      "UPDATE trips SET name=$1, country=$2, future_trip=$3, image=$4, description=$5 WHERE id=$6 AND user_id=$7 RETURNING *",
       [
         trip.name,
         trip.country,
@@ -69,6 +69,7 @@ const updateTrip = async (id, userID, trip) => {
         userID,
       ]
     );
+    return updatedTrip;
   } catch (error) {
     return error;
   }
