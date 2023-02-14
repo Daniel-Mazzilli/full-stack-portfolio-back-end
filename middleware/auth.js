@@ -4,6 +4,7 @@ const bcrypt = require("bcrypt");
 const { getUserByUsername } = require("../queries/users.js");
 
 dotenv.config();
+
 const refreshList = {};
 
 const verifyToken = (req, res, next) => {
@@ -52,6 +53,7 @@ const userLogin = async (req, res, next) => {
         token: req.token,
         refreshToken: req.refreshToken,
       };
+      console.log(refreshList)
       next();
     } else {
       res.status(400).json({ error: "Invalid password" });
@@ -62,6 +64,8 @@ const userLogin = async (req, res, next) => {
 };
 
 const tokenRefresh = (req, res, next) => {
+  console.log(req.body.refreshToken)
+  console.log(refreshList)
   if (req.body.refreshToken && req.body.refreshToken in refreshList) {
     const decoded = jwt.verify(
       req.body.refreshToken,
