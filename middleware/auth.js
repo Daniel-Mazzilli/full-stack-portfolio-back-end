@@ -61,4 +61,47 @@ const userLogin = async (req, res, next) => {
   }
 };
 
-module.exports = { verifyToken, userLogin };
+const tokenRefresh = (req, res, next) => {
+  if (req.body.refreshToken && req.body.refreshToken in refreshList) {
+    const decoded = jwt.verify(
+      req.body.refreshToken,
+      process.env.SECRET_RTOKEN
+    );
+
+    // generate access token
+    req.token = jwt.sign(
+      {
+        user: decoded.username,
+        email: decoded.email,
+      },
+      process.env.SECRET_TOKEN,
+      {
+        expiresIn: "1h",
+      }
+    );
+    // generate refresh token
+    req.refreshToken = jwt.sign(
+      { user: decoded.username, email: decoded.email },
+      process.env.SECRET_RTOKEN,
+      {
+        expiresIn: "30d",
+      }
+    );
+
+    req.content = {
+      user: decoded.user,
+      email: decoded.email,
+    };
+
+    refreshList[req.refreshToken] = {
+      status: "loggedin",
+      token: req.token,
+      refreshToken: req.refreshToken,
+    };
+  } else {
+    res.status(401).send("Can't refresh. Invalid Token");
+  }
+  next();
+};
+
+module.exports = { verifyToken, userLogin, tokenRefresh };

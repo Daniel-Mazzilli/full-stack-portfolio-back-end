@@ -1,7 +1,7 @@
 const express = require("express");
 const users = express.Router();
 const { getAllUsers, getUser, createUser } = require("../queries/users.js");
-const { hashPass } = require("../middleware/validatePass.js");
+const { hashPass } = require("../middleware/securePass.js");
 const usernameController = require("./usernameController.js");
 const emailController = require("./emailController.js");
 const authController = require("./authController.js");
