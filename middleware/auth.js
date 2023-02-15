@@ -64,7 +64,6 @@ const userLogin = async (req, res, next) => {
 };
 
 const tokenRefresh = (req, res, next) => {
-  console.log(req.body.refreshToken)
   console.log(refreshList)
   if (req.body.refreshToken && req.body.refreshToken in refreshList) {
     const decoded = jwt.verify(
