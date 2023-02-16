@@ -9,6 +9,7 @@ const {
   getIdByUsername,
 } = require("../queries/users.js");
 const { hashPass } = require("../middleware/securePass.js");
+const { lowercase } = require("../middleware/lowercase.js");
 const usernameController = require("./usernameController.js");
 const emailController = require("./emailController.js");
 const authController = require("./authController.js");
@@ -32,7 +33,7 @@ users.get("/", async (req, res) => {
 // Show
 users.get("/:username", async (req, res) => {
   const { username } = req.params;
-  const user = await getUser(username);
+  const user = await getUser(username.toLowerCase());
   if (!user.message) {
     res.status(200).json(user);
   } else {
@@ -41,7 +42,7 @@ users.get("/:username", async (req, res) => {
 });
 
 // Create
-users.post("/", hashPass, async (req, res) => {
+users.post("/", lowercase, hashPass, async (req, res) => {
   const newUser = await createUser(req.body);
   if (!newUser.message) {
     res.status(200).json(newUser);
@@ -51,10 +52,10 @@ users.post("/", hashPass, async (req, res) => {
 });
 
 // Update
-users.put("/:username", hashPass, async (req, res) => {
+users.put("/:username", lowercase, hashPass, async (req, res) => {
   const { username } = req.params;
-  const id = await getIdByUsername(username);
-  const updatedUser = await updateUser(req.body, id);
+  const id = await getIdByUsername(username.toLowerCase());
+  const updatedUser = await updateUser(req.body, id.id);
   if (!updateUser.message) {
     res.status(200).json(updatedUser);
   } else {
@@ -65,8 +66,8 @@ users.put("/:username", hashPass, async (req, res) => {
 // Delete
 users.delete("/:username", async (req, res) => {
   const { username } = req.params;
-  const id = await getIdByUsername(username);
-  const deletedUser = await deleteUser(id);
+  const id = await getIdByUsername(username.toLowerCase());
+  const deletedUser = await deleteUser(id.id);
   if (!deletedUser.message) {
     res.status(200).json(deletedUser);
   } else {
