@@ -32,7 +32,7 @@ const createTrip = async (trip, userID) => {
         trip.name,
         trip.circa,
         trip.country,
-        trip.future_trip,
+        trip.go_back,
         trip.image,
         trip.description,
         userID,
@@ -59,12 +59,12 @@ const deleteTrip = async (id, userID) => {
 const updateTrip = async (id, userID, trip) => {
   try {
     const updatedTrip = await db.one(
-      "UPDATE trips SET name=$1, circa=$2, country=$3, future_trip=$4, image=$5, description=$6 WHERE id=$7 AND user_id=$8 RETURNING *",
+      "UPDATE trips SET name=$1, circa=$2, country=$3, go_back=$4, image=$5, description=$6 WHERE id=$7 AND user_id=$8 RETURNING *",
       [
         trip.name,
         trip.circa,
         trip.country,
-        trip.future_trip,
+        trip.go_back,
         trip.image,
         trip.description,
         id,

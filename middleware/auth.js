@@ -5,7 +5,7 @@ const { getUserByUsername } = require("../queries/users.js");
 
 dotenv.config();
 
-const refreshList = {};
+let refreshList = {};
 
 const verifyToken = (req, res, next) => {
   const authHeader = req.headers["authorization"];
@@ -48,12 +48,14 @@ const userLogin = async (req, res, next) => {
         email: user.email,
       };
       //add to list
+      // I added a reset to the list
+      refreshList = {};
       refreshList[req.refreshToken] = {
         status: "loggedin",
         token: req.token,
         refreshToken: req.refreshToken,
       };
-      console.log(refreshList)
+      console.log(refreshList);
       next();
     } else {
       res.status(400).json({ error: "Invalid password" });
@@ -64,7 +66,7 @@ const userLogin = async (req, res, next) => {
 };
 
 const tokenRefresh = (req, res, next) => {
-  console.log(refreshList)
+  console.log(refreshList);
   if (req.body.refreshToken && req.body.refreshToken in refreshList) {
     const decoded = jwt.verify(
       req.body.refreshToken,

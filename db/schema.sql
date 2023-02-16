@@ -17,7 +17,7 @@ CREATE TABLE trips (
     name TEXT NOT NULL,
     circa TEXT NOT NULL,
     country TEXT NOT NULL,
-    go_back BOOL NOT NULL,
+    go_back BOOL,
     image TEXT,
     description TEXT,
     user_id INTEGER REFERENCES users (id) ON DELETE CASCADE
