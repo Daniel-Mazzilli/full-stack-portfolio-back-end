@@ -27,10 +27,10 @@ const getTrip = async (id, userID) => {
 const createTrip = async (trip, userID) => {
   try {
     const newTrip = await db.one(
-      "INSERT INTO trips (name, when, country, go_back, image, description, user_id) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *",
+      "INSERT INTO trips (name, circa, country, go_back, image, description, user_id) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *",
       [
         trip.name,
-        trip.when,
+        trip.circa,
         trip.country,
         trip.future_trip,
         trip.image,
@@ -59,10 +59,10 @@ const deleteTrip = async (id, userID) => {
 const updateTrip = async (id, userID, trip) => {
   try {
     const updatedTrip = await db.one(
-      "UPDATE trips SET name=$1, when=$2, country=$3, future_trip=$4, image=$5, description=$6 WHERE id=$7 AND user_id=$8 RETURNING *",
+      "UPDATE trips SET name=$1, circa=$2, country=$3, future_trip=$4, image=$5, description=$6 WHERE id=$7 AND user_id=$8 RETURNING *",
       [
         trip.name,
-        trip.when,
+        trip.circa,
         trip.country,
         trip.future_trip,
         trip.image,

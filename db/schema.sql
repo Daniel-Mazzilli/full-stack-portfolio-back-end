@@ -15,7 +15,7 @@ CREATE TABLE users (
 CREATE TABLE trips (
     id SERIAL PRIMARY KEY,
     name TEXT NOT NULL,
-    when TEXT NOT NULL,
+    circa TEXT NOT NULL,
     country TEXT NOT NULL,
     go_back BOOL NOT NULL,
     image TEXT,
