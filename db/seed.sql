@@ -1,0 +1,1 @@
+-- Avoided making a seed file because of user password encyption. Users and trip added via postman or front-end
