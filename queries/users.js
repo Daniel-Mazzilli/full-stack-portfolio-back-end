@@ -63,10 +63,43 @@ const createUser = async (user) => {
   }
 };
 
+const updateUser = async (user, idValue) => {
+  try {
+    const updateUser = await db.one(
+      "UPDATE users SET full_name=$1, email=$2, username=$3, password=$4, home_country=$5 WHERE id=$6 RETURNING *",
+      [
+        user.full_name,
+        user.email,
+        user.username,
+        user.password,
+        user.home_country,
+        idValue,
+      ]
+    );
+    return updateUser;
+  } catch (error) {
+    return error;
+  }
+};
+
+const deleteUser = async (idValue) => {
+  try {
+    const deletedUser = await db.one(
+      "DELETE FROM users WHERE id=$1 RETURNING *",
+      idValue
+    );
+    return deletedUser;
+  } catch (error) {
+    return error;
+  }
+};
+
 module.exports = {
   getAllUsers,
   getUser,
   getIdByUsername,
   getUserByUsername,
   createUser,
+  updateUser,
+  deleteUser,
 };

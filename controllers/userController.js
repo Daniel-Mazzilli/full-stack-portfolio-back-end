@@ -1,6 +1,13 @@
 const express = require("express");
 const users = express.Router();
-const { getAllUsers, getUser, createUser } = require("../queries/users.js");
+const {
+  getAllUsers,
+  getUser,
+  createUser,
+  updateUser,
+  deleteUser,
+  getIdByUsername,
+} = require("../queries/users.js");
 const { hashPass } = require("../middleware/securePass.js");
 const usernameController = require("./usernameController.js");
 const emailController = require("./emailController.js");
@@ -40,6 +47,30 @@ users.post("/", hashPass, async (req, res) => {
     res.status(200).json(newUser);
   } else {
     res.status(500).json({ error: newUser.message });
+  }
+});
+
+// Update
+users.put("/:username", hashPass, async (req, res) => {
+  const { username } = req.params;
+  const id = await getIdByUsername(username);
+  const updatedUser = await updateUser(req.body, id);
+  if (!updateUser.message) {
+    res.status(200).json(updatedUser);
+  } else {
+    res.status(500).json({ error: updateUser.message });
+  }
+});
+
+// Delete
+users.delete("/:username", async (req, res) => {
+  const { username } = req.params;
+  const id = await getIdByUsername(username);
+  const deletedUser = await deleteUser(id);
+  if (!deletedUser.message) {
+    res.status(200).json(deletedUser);
+  } else {
+    res.status(500).json({ error: deletedUser.message });
   }
 });
 

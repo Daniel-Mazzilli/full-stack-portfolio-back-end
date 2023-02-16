@@ -15,8 +15,9 @@ CREATE TABLE users (
 CREATE TABLE trips (
     id SERIAL PRIMARY KEY,
     name TEXT NOT NULL,
+    when TEXT NOT NULL,
     country TEXT NOT NULL,
-    future_trip BOOL,
+    go_back BOOL NOT NULL,
     image TEXT,
     description TEXT,
     user_id INTEGER REFERENCES users (id) ON DELETE CASCADE
