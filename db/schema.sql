@@ -3,6 +3,8 @@ CREATE DATABASE travel_dev;
 
 \c travel_dev;
 
+DROP TABLE IF EXISTS users;
+
 CREATE TABLE users (
     id SERIAL PRIMARY KEY,
     full_name TEXT NOT NULL,
@@ -11,6 +13,8 @@ CREATE TABLE users (
     password TEXT NOT NULL,
     home_country TEXT NOT NULL
 );
+
+DROP TABLE IF EXISTS trips;
 
 CREATE TABLE trips (
     id SERIAL PRIMARY KEY,
